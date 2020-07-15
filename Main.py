@@ -29,7 +29,6 @@ OWNER = "lorplays"
 TOKEN = "cfz4w854dhcow6ed6f3rpigxnn1idi"
 CLIENTID = "gp762nuuoqcoxypju8c569th9wz7q5"
 
-
 def Start(GameMode, Deck):
     if GameMode == "PvE":
         pyautogui.click((2003, 368), clicks=1, interval=1)
@@ -101,16 +100,19 @@ def Emoji(Name):
         pyautogui.click((2072, 372), clicks=1, interval=1)
 
 def Surrender():
-    pyautogui.click((3766, 52), clicks=1, interval=1)
-    pyautogui.click((2733, 892), clicks=1, interval=1)
-    pyautogui.click((3017, 609), clicks=1, interval=10)
-    # waiting to cancel
-    pyautogui.click((3192, 984), clicks=1, interval=1)
+    if(IsMyRound == True):
+        pyautogui.click((3766, 52), clicks=1, interval=1)
+        pyautogui.click((2733, 892), clicks=1, interval=1)
+        pyautogui.click((3017, 609), clicks=1, interval=10)
+        # waiting to cancel
+        pyautogui.click((3192, 984), clicks=1, interval=1)
 
 def DragAndDrop(initialX, initialY, dropX, dropY, Delay):
-    # initialX, initialY, dropX, dropY, Delay
-    pyautogui.moveTo(initialX, initialY, Delay)
-    pyautogui.dragTo(dropX, dropY, Delay)
+    isTrue = IsMyRound()
+    if(isTrue == True):
+        # initialX, initialY, dropX, dropY, Delay
+        pyautogui.moveTo(initialX, initialY, Delay)
+        pyautogui.dragTo(dropX, dropY, Delay)
 
 def UseSpell(initialX, initialY, clickX, clickY, Delay):
     pyautogui.moveTo(initialX, initialY, Delay)
@@ -118,7 +120,24 @@ def UseSpell(initialX, initialY, clickX, clickY, Delay):
     pyautogui.click((3590, 539), clicks=1, interval=1)
 
 def IsMyRound():
-    pass
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    # initialize the WindowCapture class
+    wincap = WindowCapture('Legends of Runeterra')
+    # finding myRound.jpg
+    #vision_IP = Vision('img\minalegal.jpg')
+    vToFind = Vision('img\legionsaboteur.jpg')
+    loop_time = time()
+    while(True):
+        screen = wincap.get_screenshot()
+        points = vToFind.find(screen, 0.99, 'rectangles')
+        #print('FPS {}'.format(1 / (time() - loop_time)))
+        print('Is my turn.')
+        loop_time = time()
+        return True
+        if cv.waitKey(1) == ord('q'):
+            cv.destroyAllWindows()
+            break
+    print('Not my turn')    
 
 def Allin(initialX, InitialY):
     pyautogui.moveTo(3046, 902,0.25)
@@ -127,7 +146,117 @@ def Allin(initialX, InitialY):
     pyautogui.moveTo(2488, 707, 0.1)
     pyautogui.moveTo(2864, 674, 0.1)
     pyautogui.mouseUp(button="Left")
+
+def PlayXCard():
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    wincap = WindowCapture('Legends of Runeterra')
+    #vision_IP = Vision('img\minalegal.jpg')
     
+    #haystack_img = cv.imread('img\este1.jpg', cv.IMREAD_UNCHANGED)
+    needle_img = cv.imread('img\preciouspet.jpg', cv.IMREAD_UNCHANGED)
+
+    result = cv.matchTemplate(wincap.get_screenshot(), needle_img, cv.TM_CCOEFF_NORMED)
+    
+    #cv.imshow('Result', result)
+    #cv.waitKey()
+
+    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
+
+    print('Best match top left position: %s' % str(max_loc))
+    print('Best match confidence: %s' % max_val)
+    print('ScreenPosition: %s' % str(wincap.get_screen_position(max_loc)))
+    
+    pos = str(wincap.get_screen_position(max_loc))
+    arrayPos = pos.split(', ')
+    PosX = arrayPos[0].replace("(", '')
+    PosY = arrayPos[1].replace(")", '')
+    print(PosX)
+    print(PosY)
+    pyautogui.moveTo(int(PosX), int(PosY), 0.1)
+    pyautogui.dragTo(2851, 652, 1)
+    pyautogui.click(3539, 533,1)
+    pyautogui.click(3590, 539, 1)
+    
+def Attack():
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    wincap = WindowCapture('Legends of Runeterra')
+    #vision_IP = Vision('img\minalegal.jpg')
+    
+    #haystack_img = cv.imread('img\este1.jpg', cv.IMREAD_UNCHANGED)
+    needle_img = cv.imread('img\preciouspet1.jpg', cv.IMREAD_UNCHANGED)
+
+    result = cv.matchTemplate(wincap.get_screenshot(), needle_img, cv.TM_CCOEFF_NORMED)
+    
+    #cv.imshow('Result', result)
+    #cv.waitKey()
+
+    min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
+
+    print('Best match top left position: %s' % str(max_loc))
+    print('Best match confidence: %s' % max_val)
+    print('ScreenPosition: %s' % str(wincap.get_screen_position(max_loc)))
+    
+    pos = str(wincap.get_screen_position(max_loc))
+    arrayPos = pos.split(', ')
+    PosX = arrayPos[0].replace("(", '')
+    PosY = arrayPos[1].replace(")", '')
+    print(PosX)
+    print(PosY)
+    pyautogui.moveTo(int(PosX), int(PosY), 0.1)
+    pyautogui.dragTo(2851, 652, 0.25)
+    pyautogui.click(3593, 540, duration=1, interval=1)
+
+class Bot(SingleServerIRCBot):
+	def __init__(self):
+		self.HOST = "irc.chat.twitch.tv"
+		self.PORT = 6667
+		self.USERNAME = NAME.lower()
+		self.CLIENT_ID = CLIENTID
+		self.TOKEN = TOKEN
+		self.CHANNEL = f"#{OWNER}"
+
+		url = f"https://api.twitch.tv/kraken/users?login={self.USERNAME}"
+		headers = {"Client-ID": self.CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json"}
+		resp = get(url, headers=headers).json()
+		self.channel_id = resp["users"][0]["_id"]
+
+		super().__init__([(self.HOST, self.PORT, f"oauth:{self.TOKEN}")], self.USERNAME, self.USERNAME)
+
+	def on_welcome(self, cxn, event):
+		for req in ("membership", "tags", "commands"):
+			cxn.cap("REQ", f":twitch.tv/{req}")
+
+		cxn.join(self.CHANNEL)
+		#db.build()
+		self.send_message("Now online.")
+		#Start("PvE", 1)
+		#Replace("2 3")
+		#Emoji("Shen")
+		#IsMyRound()
+		#PlayXCard()
+		#Attack()
+		#DragAndDrop(3049,1056,2851, 652, 1)
+		#UseSpell(2851, 652, 2883, 916, 1)
+		#Allin(3046, 902)
+  
+	def on_pubmsg(self, cxn, event):
+		tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
+		user = {"name": tags["display-name"], "id": tags["user-id"]}
+		message = event.arguments[0]
+		
+		if user["name"] != NAME:
+			cmds.process(bot, user, message)
+		
+		print(f"Message from {user['name']}: {message}")
+		
+  
+	def send_message(self, message):
+		self.connection.privmsg(self.CHANNEL, message)
+
+if __name__ == "__main__":
+	bot = Bot()
+	bot.start()
+  
 #region Captura de Tela
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -135,7 +264,10 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # initialize the WindowCapture class
 wincap = WindowCapture('Legends of Runeterra')
 # initialize the WindowCapture class
-vision_IP = Vision('img\minalegal.jpg')
+#vision_IP = Vision('img\minalegal.jpg')
+
+fogolivre = ["img\\oomcrewrookie.jpg", "img\\crimsondisciple.jpg", "img\\decimate.jpg", "img\\getexcited.jpg", "img\\imperialdemoli.jpg", "img\\legiongran.jpg", "img\\legionrear.jpg", "img\\legionsaboteur.jpg", "img\\mysticshot.jpg", "img\\oxianfervor.jpg", "img\\preciouspet.jpg", "img\\statikkshock.jpg", "img\\sformation.jpg", "img\\usedcasksalesman.jpg"]
+vToFind = Vision(fogolivre[6])
 
 
 loop_time = time()
@@ -143,11 +275,12 @@ while(True):
     screenshot = wincap.get_screenshot()
     
     #cv.imshow('Computer Vision', screenshot)
-    #points = vision_limestone.find(screenshot, 0.5, 'rectangles')
-    #points = vision_gunsnbottle.find(screenshot, 0.7, 'points')
-    points = vision_IP.find(screenshot, 0.7, 'rectangles')
+    # Esse funciona
+    # points = vision_IP.find(screenshot, 0.7, 'rectangles')
+    points = vToFind.find(screenshot, 0.99, 'rectangles')
     
-    print('FPS {}'.format(1 / (time() - loop_time)))
+    #print('FPS {}'.format(1 / (time() - loop_time)))
+    #print('FPS {}'.format(time() - loop_time))
     loop_time = time()
     # press 'q' with the out
     if cv.waitKey(1) == ord('q'):
@@ -200,50 +333,6 @@ else:
 
 #endregion
 
-#region Bot da Twitch
-class Bot(SingleServerIRCBot):
-	def __init__(self):
-		self.HOST = "irc.chat.twitch.tv"
-		self.PORT = 6667
-		self.USERNAME = NAME.lower()
-		self.CLIENT_ID = CLIENTID
-		self.TOKEN = TOKEN
-		self.CHANNEL = f"#{OWNER}"
 
-		url = f"https://api.twitch.tv/kraken/users?login={self.USERNAME}"
-		headers = {"Client-ID": self.CLIENT_ID, "Accept": "application/vnd.twitchtv.v5+json"}
-		resp = get(url, headers=headers).json()
-		self.channel_id = resp["users"][0]["_id"]
 
-		super().__init__([(self.HOST, self.PORT, f"oauth:{self.TOKEN}")], self.USERNAME, self.USERNAME)
-
-	def on_welcome(self, cxn, event):
-		for req in ("membership", "tags", "commands"):
-			cxn.cap("REQ", f":twitch.tv/{req}")
-
-		cxn.join(self.CHANNEL)
-		#db.build()
-		self.send_message("Now online.")
-		#Start("PvE", 1)
-		#Replace("1 2")
-		#Emoji("Shen")
-		#DragAndDrop(3049,1056,2851, 652, 1)
-		#UseSpell(2851, 652, 2883, 916, 1)
-		#Allin(3046, 902)
-  
-	def on_pubmsg(self, cxn, event):
-		tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
-		user = {"name": tags["display-name"], "id": tags["user-id"]}
-		message = event.arguments[0]
-		
-		if user["name"] != NAME:
-			cmds.process(bot, user, message)
-		
-		print(f"Message from {user['name']}: {message}")
-	def send_message(self, message):
-		self.connection.privmsg(self.CHANNEL, message)
-
-if __name__ == "__main__":
-	bot = Bot()
-	bot.start()
-#endregion 
+# end code

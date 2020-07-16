@@ -16,6 +16,9 @@ def process(bot, user, message):
 		args = message.split(" ")[1:]
 		perform(bot, user, cmd, *args)
 
+	if "replace" in message:
+		message.split(' ')
+
 
 def perform(bot, user, cmd, *args):
 	for name, func in cmds.items():

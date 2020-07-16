@@ -17,8 +17,6 @@ def userinfo(bot, user, *args):
 def shutdown(bot, user, *args):
 	if user["name"].lower() == OWNER:
 		bot.send_message("Shutting down.")
-		db.commit()
-		db.close()
 		bot.disconnect()
 		exit(0)
 	else:

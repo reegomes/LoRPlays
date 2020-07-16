@@ -84,6 +84,15 @@ def Replace(args):
 def DontReplace():
     pyautogui.click((3590, 539), clicks=1, interval=1)
 
+def Pass():
+    pyautogui.click((3590, 539), clicks=1, interval=1)
+
+def Continue():
+    pyautogui.click((3178, 995), clicks=1, interval=1)
+
+def PlayWithPoro():
+    pyautogui.click((2117, 828), clicks=3, interval=0.10)
+
 def Emoji(Name):
     pyautogui.click((2277, 1031), clicks=1, interval=0.25)
     if Name == "Shen":
@@ -119,13 +128,16 @@ def UseSpell(initialX, initialY, clickX, clickY, Delay):
     pyautogui.click(clickX, clickY, Delay)
     pyautogui.click((3590, 539), clicks=1, interval=1)
 
+def EnemyNexus():
+    pyautogui.click((2157, 418), clicks=1, interval=1)
+
 def IsMyRound():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     # initialize the WindowCapture class
     wincap = WindowCapture('Legends of Runeterra')
     # finding myRound.jpg
     #vision_IP = Vision('img\minalegal.jpg')
-    vToFind = Vision('img\legionsaboteur.jpg')
+    vToFind = Vision('img\isMyRound.jpg')
     loop_time = time()
     while(True):
         screen = wincap.get_screenshot()
@@ -147,16 +159,47 @@ def Allin(initialX, InitialY):
     pyautogui.moveTo(2864, 674, 0.1)
     pyautogui.mouseUp(button="Left")
 
-def PlayXCard():
+def PlayXCard(CardName):
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     wincap = WindowCapture('Legends of Runeterra')
     #vision_IP = Vision('img\minalegal.jpg')
     
-    #haystack_img = cv.imread('img\este1.jpg', cv.IMREAD_UNCHANGED)
-    needle_img = cv.imread('img\preciouspet.jpg', cv.IMREAD_UNCHANGED)
+    #found_img = cv.imread('img\preciouspet.jpg', cv.IMREAD_UNCHANGED)
 
-    result = cv.matchTemplate(wincap.get_screenshot(), needle_img, cv.TM_CCOEFF_NORMED)
-    
+    #------------------------------#
+    #fogolivre = ["img\\oomcrewrookie.jpg", "img\\crimsondisciple.jpg", "img\\decimate.jpg", "img\\getexcited.jpg", "img\\imperialdemoli.jpg", "img\\legiongran.jpg", "img\\legionrear.jpg", "img\\legionsaboteur.jpg", "img\\mysticshot.jpg", "img\\oxianfervor.jpg", "img\\preciouspet.jpg", "img\\statikkshock.jpg", "img\\sformation.jpg", "img\\usedcasksalesman.jpg"]
+    if CardName == "Legion Rearguard":
+        vToFind = cv.imread('img\legionrear.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Legion Saboteur":
+        vToFind = cv.imread('img\legionsaboteur.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Precious Pet":
+        vToFind = cv.imread('img\preciouspet.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Boomcrew Rookie":
+        vToFind = cv.imread('img\oomcrewrookie.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Crimson Disciple":
+        vToFind = cv.imread('img\crimsondisciple.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Imperial Demolitionist":
+        vToFind = cv.imread('img\imperialdemoli.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Legion Granadier":
+        vToFind = cv.imread('img\legiongran.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Mystic Shot":
+        vToFind = cv.imread('img\mysticshot.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Transfusion":
+        vToFind = cv.imread('img\sformation.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Get Exxcited":
+        vToFind = cv.imread('img\getexcited.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Noxian Fervor":
+        vToFind = cv.imread('img\oxianfervor.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Used Cask Salesman":
+        vToFind = cv.imread('img\casksalesman.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Statikk Shock":
+        vToFind = cv.imread('img\statikkshock.jpg', cv.IMREAD_UNCHANGED)
+    elif CardName == "Decimate":
+        vToFind = cv.imread('img\decimate.jpg', cv.IMREAD_UNCHANGED)
+    #------------------------------#
+
+    result = cv.matchTemplate(wincap.get_screenshot(), vToFind, cv.TM_CCOEFF_NORMED)
+
     #cv.imshow('Result', result)
     #cv.waitKey()
 
@@ -174,8 +217,8 @@ def PlayXCard():
     print(PosY)
     pyautogui.moveTo(int(PosX), int(PosY), 0.1)
     pyautogui.dragTo(2851, 652, 1)
-    pyautogui.click(3539, 533,1)
-    pyautogui.click(3590, 539, 1)
+    #pyautogui.click(3539, 533,1)
+    #pyautogui.click(3590, 539, 1)
     
 def Attack():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -183,7 +226,7 @@ def Attack():
     #vision_IP = Vision('img\minalegal.jpg')
     
     #haystack_img = cv.imread('img\este1.jpg', cv.IMREAD_UNCHANGED)
-    needle_img = cv.imread('img\preciouspet1.jpg', cv.IMREAD_UNCHANGED)
+    needle_img = cv.imread('img\mobBeSelected.jpg', cv.IMREAD_UNCHANGED)
 
     result = cv.matchTemplate(wincap.get_screenshot(), needle_img, cv.TM_CCOEFF_NORMED)
     
@@ -204,7 +247,7 @@ def Attack():
     print(PosY)
     pyautogui.moveTo(int(PosX), int(PosY), 0.1)
     pyautogui.dragTo(2851, 652, 0.25)
-    pyautogui.click(3593, 540, duration=1, interval=1)
+    #pyautogui.click(3593, 540, duration=1, interval=1)
 
 class Bot(SingleServerIRCBot):
 	def __init__(self):
@@ -229,16 +272,7 @@ class Bot(SingleServerIRCBot):
 		cxn.join(self.CHANNEL)
 		#db.build()
 		self.send_message("Now online.")
-		#Start("PvE", 1)
-		#Replace("2 3")
-		#Emoji("Shen")
-		#IsMyRound()
-		#PlayXCard()
-		#Attack()
-		#DragAndDrop(3049,1056,2851, 652, 1)
-		#UseSpell(2851, 652, 2883, 916, 1)
-		#Allin(3046, 902)
-  
+
 	def on_pubmsg(self, cxn, event):
 		tags = {kvpair["key"]: kvpair["value"] for kvpair in event.tags}
 		user = {"name": tags["display-name"], "id": tags["user-id"]}
@@ -247,8 +281,80 @@ class Bot(SingleServerIRCBot):
 		if user["name"] != NAME:
 			cmds.process(bot, user, message)
 		
-		print(f"Message from {user['name']}: {message}")
+		#print(f"Message from {user['name']}: {message}")
+		if "startgame" in message:
+			cmd = str(message)
+			cmdStr = cmd[10:]
+			Start(cmdStr, 1)
+	
+		if "replace" in message:
+			cmd = str(message)
+			cmdStr = cmd[8:]
+			Replace(cmdStr)
 		
+		if "dontreplace" in message:
+			DontReplace()
+		
+		if "emoji" in message:
+			cmd = str(message)
+			cmdStr = cmd[6:]
+			Emoji(cmdStr)
+		
+		if "!ff" in message:
+			Surrender()
+		
+		if "replace" in message:
+			cmd = str(message)
+			cmdStr = cmd[8:]
+			Replace(cmdStr)
+		
+		if "usespell" in message:
+			pass
+		
+		if "allin" in message:
+			pass
+		
+		if "playcard" in message:
+			cmd = str(message)
+			cmdStr = cmd[9:]
+			print(cmdStr)
+			PlayXCard(cmdStr)
+				
+		if "attack" in message:
+			Attack()
+   		
+		if "pass" in message:
+			Pass()
+   		
+		if "playwithporo" in message:
+			PlayWithPoro()
+   		
+		if "enemynexus" in message:
+			EnemyNexus()
+   		
+		if "continue" in message:
+			Continue()
+		
+		if "cmd1" in message:
+			pass
+		
+		if "cmd2" in message:
+			pass
+		
+		if "cmd3" in message:
+			pass
+		
+		if "cmd4" in message:
+			pass
+		
+		if "cmd5" in message:
+			pass
+		
+		if "cmd6" in message:
+			pass
+		
+  
+		print(message)
   
 	def send_message(self, message):
 		self.connection.privmsg(self.CHANNEL, message)
@@ -257,7 +363,7 @@ if __name__ == "__main__":
 	bot = Bot()
 	bot.start()
   
-#region Captura de Tela
+#region Screen capture
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 

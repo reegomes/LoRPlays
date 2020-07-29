@@ -8,6 +8,7 @@ cmds = {
 	"userinfo": misc.userinfo,
 	"hello": misc.hello,
 	"shutdown": misc.shutdown,
+	"poll": misc.poll,
  }
 
 def process(bot, user, message):

@@ -5,18 +5,17 @@ import os
 from windowcapture import WindowCapture
 from vision import Vision
 
-class FindLoc:
+class FindLoc():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     wincap = WindowCapture('Legends of Runeterra')
-    #vision_IP = Vision('img\minalegal.jpg')
     
     haystack_img = cv.imread('img\este1.jpg', cv.IMREAD_UNCHANGED)
     needle_img = cv.imread('img\crimsondisciple.jpg', cv.IMREAD_UNCHANGED)
 
     result = cv.matchTemplate(wincap.get_screenshot(), needle_img, cv.TM_CCOEFF_NORMED)
     
-    #cv.imshow('Result', result)
-    #cv.waitKey()
+    cv.imshow('Result', result)
+    cv.waitKey()
 
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
 
@@ -49,3 +48,7 @@ class FindLoc:
         # Replace("4 2 3 1")
     else:
         print('Image not found.')
+        
+        
+def FindLoc(Found: str, On: str) -> cv:
+    return 1

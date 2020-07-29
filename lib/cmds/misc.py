@@ -23,3 +23,5 @@ def shutdown(bot, user, *args):
 		bot.send_message("You can't do that.")
 def howtoplay(bot, user, *args):
 	bot.send_message(f"Em breve")
+def poll(bot, user, *args):
+	pass

@@ -654,4 +654,4 @@ else:
 #endregion
 
 if __name__ == "__main__":
-	#Start("PvE", 1)
+	Start("PvE", 1)
